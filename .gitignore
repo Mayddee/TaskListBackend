@@ -39,11 +39,13 @@ build/
 
 # Database
 *.sql
+!src/main/resources/schema.sql
 
 *.yaml
+*.yml
 
 # macOS
 .DS_Store
 
 # OS / misc
-*.class
+*.classsrc/main/resources/application.yaml
