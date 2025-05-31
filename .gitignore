@@ -41,8 +41,8 @@ build/
 *.sql
 !src/main/resources/schema.sql
 
-*.yaml
-*.yml
+#*.yaml
+#*.yml
 
 # macOS
 .DS_Store
