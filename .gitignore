@@ -40,6 +40,8 @@ build/
 # Database
 *.sql
 
+*.yaml
+
 # macOS
 .DS_Store
 

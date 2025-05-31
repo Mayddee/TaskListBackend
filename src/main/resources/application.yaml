@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/tasklist?currentSchema=tasklist
-    username: amangeldimadina
-    password: mayddee
+    url: jdbc:postgresql://monorail.proxy.rlwy.net:13740/railway
+    username: postgres
+    password: rGzxhzagQcasZPPkHWVzQGNWWJkSByoB
     driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5433/tasklist?currentSchema=tasklist
+#    username: amangeldimadina
+#    password: mayddee
+#    driver-class-name: org.postgresql.Driver
   sql:
     init:
       mode: always
