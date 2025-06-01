@@ -6,6 +6,19 @@
 
 📍 **[https://tasklistbackend-production-8239.up.railway.app/swagger-ui/index.html](https://tasklistbackend-production-8239.up.railway.app/swagger-ui/index.html)**
 
+
+##  Технологический стек
+- **Java 17+**
+- **Spring Boot 3**
+- Spring Web
+- Spring Security (JWT)
+- Spring Validation
+- **JWT (jjwt) **
+- **HikariCP**
+- **PostgreSQL / Railway PostgreSQL**
+- **Lombok**
+- **Swagger / OpenAPI**
+- **Maven**
 ---
 
 ## ✨ Возможности (Фичи)
