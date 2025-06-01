@@ -1,118 +1,112 @@
-# TaskList Backend Documentation
+# 📋 TaskList — Backend API
 
-Welcome to the backend of the **TaskList** application — a Spring Boot-powered REST API that provides task management functionality with robust JWT-based authentication and role-based access control.
+**TaskList** — это RESTful API на Spring Boot, созданное для управления задачами пользователей. Поддерживает аутентификацию, авторизацию, операции с задачами и простую интеграцию с фронтендом.
 
----
+## 🔗 Swagger (публичная документация API)
 
-## 🚀 Features Overview
-
-* ✅ **User Authentication** via JWT (access and refresh tokens)
-* 📆 **CRUD operations on Tasks** (Create, Read, Update, Delete)
-* 🔒 **Role-based Authorization** with Spring Security
-* ⏳ **Token Refresh System** to renew access tokens seamlessly
-* ⚖️ **Validation** for all request DTOs using `@Validated`
-* 🔄 **OpenAPI (Swagger)** integration for live API testing and documentation
+📍 **[https://tasklistbackend-production-8239.up.railway.app/swagger-ui/index.html](https://tasklistbackend-production-8239.up.railway.app/swagger-ui/index.html)**
 
 ---
 
-## 📂 Project Structure
+## ✨ Возможности (Фичи)
 
-```
-src/main/java/org/example/tasklist
-|
-|— auth          # Authentication logic, token generation/validation
-|— config        # Spring Security + CORS configurations
-|— controller    # REST Controllers for users and tasks
-|— dto           # Data Transfer Objects (UserDto, TaskDto)
-|— mappers       # MapStruct or manual DTO <-> Entity mappers
-|— model         # Entity classes (User, Task, Role)
-|— repository    # Raw JDBC or JPA repositories
-|— service       # Business logic for User and Task domains
-```
+* ✅ Регистрация и вход по JWT
+* 🔐 Защищённые эндпоинты
+* 🔁 Рефреш access-токена
+* 📄 CRUD-действия над задачами
+* 🧠 Проверка владельца задачи (авторизация)
+* 🔧 SQL-инициализация БД при запуске
+* 🌐 Swagger UI с возможностью ручного тестирования
+* 🪥 CORS-конфигурация для фронтенда ([http://localhost:3000](http://localhost:3000))
 
 ---
 
-## 📅 How to Run Locally (also preferred to use [Deployed Swagger URL] link below)
+## 🚀 Запуск проекта локально
 
-### 1. Clone the Repository
+### 1. 📂 Клонировать репозиторий
 
 ```bash
-git clone https://github.com/yourusername/tasklist-backend.git
+git clone https://github.com/your-username/tasklist-backend.git
 cd tasklist-backend
 ```
 
-### 2. Configure Database
+### 2. 📄 Настроить `application.yaml`
 
-Edit `application.properties` or `application.yml`:
+Находится в `src/main/resources/application.yaml`:
 
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tasklist
+    username: postgres
+    password: your_password
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+security:
+  jwt:
+    access: 3600000
+    refresh: 604800000
+    secret: your_secure_secret
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/tasklist
-db.username=yourusername
-db.password=yourpassword
-```
 
-### 3. Build and Run
+> ⚡ **Важно:** будет автоматически выполнен `schema.sql`, создающий базу данных при первом запуске.
+
+### 3. 🔍 Убедитесь, что у вас есть PostgreSQL
+
+Создайте базу данных `tasklist` вручную или используйте Railway.
+
+### 4. ▶️ Запустить
 
 ```bash
-./mvnw clean install
 ./mvnw spring-boot:run
 ```
 
-The app will be available at: `http://localhost:8080`
+Или запустить `TasklistApplication.java` через IDE (например IntelliJ).
 
 ---
 
-## 🔍 API Reference (Swagger)
+## 🤝 Интеграция с фронтендом
 
-Try out all requests directly from Swagger UI:
+* Проект идеально работает с React/Next.js.
+* Все защищённые запросы отправляются с заголовком `Authorization: Bearer <accessToken>`.
+* Когда access-токен истекает, отправляется запрос на `/auth/refresh` с refresh-токеном.
 
-**🔗 [Deployed Swagger URL](https://tasklistbackend-production-8239.up.railway.app/swagger-ui/index.html)**
+Пример в React:
 
-Main endpoints:
-
-* `POST /api/v1/auth/register` — Register new user
-* `POST /api/v1/auth/login` — Login and receive tokens
-* `POST /api/v1/auth/refresh` — Refresh token pair
-* `GET /api/v1/tasks` — Get all tasks for the current user
-* `POST /api/v1/users/{id}/tasks` — Create new task for user
-* so on
-
----
-
-## 🌎 Deployment
-
-The backend is deployed on **Railway.app** and publicly accessible.
-Ensure CORS is configured to allow frontend origins like:
-
-```
-http://localhost:3000
-
+```js
+axios.get('/api/v1/tasks', {
+  headers: { Authorization: `Bearer ${accessToken}` }
+});
 ```
 
 ---
 
-## 🚀 Integration with Frontend
+## 🎓 Структура проекта
 
-* Frontend can call backend using `axios` or `fetch` with:
-
-  * `Authorization: Bearer <access_token>` in headers
-  * Refresh token can be stored in localStorage or cookies
-* On `401 Unauthorized`, trigger refresh token flow to renew tokens
-
----
-
-## ⚙️ Planned Improvements
-
-* ✅ Add email verification during registration
-* ✅ Pagination and sorting for task list
-* ✅ Enhanced error messages via custom error handler
-* ✅ Rate limiting and brute-force protection
-* ✅ Admin role with user management
+* `schema.sql` — SQL-скрипт с созданием всех таблиц
+* `application.yaml` — конфигурация подключения к БД и JWT
+* `web.controller` — REST-контроллеры для аутентификации, задач и пользователей
+* `service` — бизнес-логика
+* `security` — JWT, фильтры, CORS, `JwtTokenProvider`
+* `repository` — репозитории, работающие напрямую с базой данных
 
 ---
 
+## 📃 Что можно улучшить в будущем?
 
+* ✉️ Подтверждение по email
+* 🚀 Мобильная адаптация (через отдельное API или GraphQL)
+* ⛏ Добавление unit-тестов (JUnit + Mockito)
+* 💡 Улучшенная обработка ошибок
+* 🤖 Возможность комментировать задачи и прикреплять файлы
 
 ---
 
-Made with ❤️ by the Mayddee.
+## 📽️ Видео-презентация
+
+*(https://www.loom.com/share/7d2afa47e8534eeba5912d3613bc851e?sid=b5855d96-446e-4ca8-a5d0-bdc04eb98ffb)*
+
+
