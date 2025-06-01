@@ -26,7 +26,7 @@
 ### 1. 📂 Клонировать репозиторий
 
 ```bash
-git clone https://github.com/your-username/tasklist-backend.git
+git clone https://github.com/Mayddee/TaskListBackend.git
 cd tasklist-backend
 ```
 
